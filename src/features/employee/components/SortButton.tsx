@@ -1,17 +1,13 @@
 import React, { useState } from "react"
 import { useDispatch } from "react-redux"
-import { AppDispatch } from "../../../../app/store"
-import {
-  NAME_ASC,
-  SORT_MAP,
-  SortCriteria,
-  sortEmployees,
-} from "../../employeeSlice"
+import { AppDispatch } from "../../../app/store"
+import { NAME_ASC, SORT_MAP } from "../../../utils/constants"
+import { sortEmployees } from "../employeeSlice"
+import { SortCriteria } from "../types"
 
 const SortButton = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [sortCriteria, setSortCriteria] = useState<SortCriteria>(NAME_ASC)
-
   const dispatch = useDispatch<AppDispatch>()
 
   const handleSort = () => {
@@ -20,7 +16,7 @@ const SortButton = () => {
   }
 
   return (
-    <div className="relative inline-block text-left mx-2">
+    <div className="relative inline-block text-left mx-2 z-50">
       <button
         type="button"
         className="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
@@ -50,10 +46,7 @@ const SortButton = () => {
             })}
           </div>
           <div className="px-4 py-2">
-            <button
-              className="w-full px-4 py-2 bg-blue-500 text-white rounded"
-              onClick={handleSort}
-            >
+            <button className="btn btn-primary w-full" onClick={handleSort}>
               Apply Sort
             </button>
           </div>

@@ -1,8 +1,8 @@
 import { useForm, SubmitHandler } from "react-hook-form"
-import { Employee, NewEmployee } from "../employeeAPI"
 import { useDispatch } from "react-redux"
 import { addEmployeeAsync } from "../employeeSlice"
 import { closeModal } from "../../../utils/common"
+import { Employee } from "../types"
 
 type Inputs = Omit<Employee, "id">
 

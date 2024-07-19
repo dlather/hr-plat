@@ -1,9 +1,8 @@
 import { openModal } from "../../../../utils/common"
-import AddEmployeeForm from "../addEmployeeForm"
-import FilterButton from "../filter"
-import SearchBar from "../searchBar"
-import SortButton from "../sortBy"
-
+import AddEmployeeForm from "../AddEmployeeForm"
+import FilterButton from "../FilterButton"
+import SearchBar from "../SearchBar"
+import SortButton from "../SortButton"
 function NavigationBar() {
   return (
     <div>

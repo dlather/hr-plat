@@ -1,26 +1,5 @@
-import {
-  HIRE_ASC,
-  HIRE_DESC,
-  NAME_ASC,
-  NAME_DESC,
-  SortCriteria,
-} from "./employeeSlice"
-
-export interface Employee {
-  id: number
-  name: string
-  role: string
-  department: string
-  hireDate: string
-  details: string
-}
-
-export type NewEmployee = Omit<Employee, "id">
-
-export interface FetchEmployeesParams {
-  departmentType: string | null
-  sortCriteria: SortCriteria
-}
+import { NAME_ASC, NAME_DESC, HIRE_ASC, HIRE_DESC } from "../../utils/constants"
+import { Employee, FetchEmployeesParams, NewEmployee } from "./types"
 
 const mockEmployees: Employee[] = [
   {
@@ -219,7 +198,7 @@ export const fetchEmployees = async (
       }
 
       resolve(filteredEmployees)
-    }, 2000)
+    }, 500)
   })
 }
 
@@ -229,11 +208,10 @@ export const addEmployee = async (employee: NewEmployee): Promise<Employee> => {
       const newId = mockEmployees.length
         ? Math.max(...mockEmployees.map(e => e.id)) + 1
         : 1
-      // Create a new employee with the generated ID
       const newEmployee: Employee = { ...employee, id: newId }
       mockEmployees.push(newEmployee)
       resolve(newEmployee)
-    }, 500) // Simulate API delay
+    }, 500)
   })
 }
 
@@ -247,7 +225,7 @@ export const editEmployee = async (
         mockEmployees[index] = updatedEmployee
       }
       resolve(updatedEmployee)
-    }, 500) // Simulate API delay
+    }, 500)
   })
 }
 
@@ -259,6 +237,6 @@ export const deleteEmployee = async (id: number): Promise<number> => {
         mockEmployees.splice(index, 1)
       }
       resolve(id)
-    }, 500) // Simulate API delay
+    }, 500)
   })
 }

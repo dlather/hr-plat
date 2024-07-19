@@ -1,10 +1,7 @@
 import React, { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { AppDispatch } from "../../../../app/store"
-import {
-  selectVisibleEmployees,
-  fetchEmployeesAsync,
-} from "../../employeeSlice"
+import { AppDispatch } from "../../../app/store"
+import { selectVisibleEmployees, filterEmployees } from "../employeeSlice"
 
 const FilterButton = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -15,17 +12,12 @@ const FilterButton = () => {
   const departments = Array.from(new Set(employees.map(emp => emp.department)))
 
   const handleFilter = () => {
-    dispatch(
-      fetchEmployeesAsync({
-        departmentType: departmentType,
-        sortCriteria: null,
-      }),
-    )
+    dispatch(filterEmployees({ type: departmentType }))
     setIsOpen(false)
   }
 
   return (
-    <div className="relative inline-block text-left mx-2">
+    <div className="relative inline-block text-left mx-2 z-50">
       <button
         type="button"
         className="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
@@ -61,10 +53,7 @@ const FilterButton = () => {
               </button>
             ))}
             <div className="px-4 py-2">
-              <button
-                className="w-full px-4 py-2 bg-blue-500 text-white rounded"
-                onClick={handleFilter}
-              >
+              <button className="btn btn-primary w-full" onClick={handleFilter}>
                 Apply Filter
               </button>
             </div>

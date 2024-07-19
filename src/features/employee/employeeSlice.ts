@@ -5,40 +5,15 @@ import {
   addEmployee,
   editEmployee,
   deleteEmployee,
+} from "./employeeAPI"
+import { HIRE_ASC, HIRE_DESC, NAME_ASC, NAME_DESC } from "../../utils/constants"
+import {
   Employee,
+  EmployeeSliceState,
   FetchEmployeesParams,
   NewEmployee,
-} from "./employeeAPI"
-
-// Sorting constants
-export const NAME_ASC = "nameAsc"
-export const NAME_DESC = "nameDesc"
-export const HIRE_ASC = "hireAsc"
-export const HIRE_DESC = "hireDesc"
-
-export type SortCriteria =
-  | typeof NAME_ASC
-  | typeof NAME_DESC
-  | typeof HIRE_ASC
-  | typeof HIRE_DESC
-  | null
-
-// TODO:
-export const SORT_MAP = {
-  "Name (A-Z)": NAME_ASC,
-  "Name (Z-A)": NAME_DESC,
-  "Hire (Recent)": HIRE_ASC,
-  "Hire (Oldest)": HIRE_DESC,
-}
-
-export interface EmployeeSliceState {
-  allEmployees: { [id: number]: Employee }
-  visibleEmployeeIds: number[]
-  departmentType: string | null
-  sortCriteria: SortCriteria
-  searchQuery: string
-  status: "idle" | "loading" | "failed"
-}
+  SortCriteria,
+} from "./types"
 
 const initialState: EmployeeSliceState = {
   allEmployees: {},
@@ -49,13 +24,11 @@ const initialState: EmployeeSliceState = {
   status: "idle",
 }
 
-// Async thunks
 export const fetchEmployeesAsync = createAsyncThunk(
   "employees/fetchEmployees",
-  async (
-    params: FetchEmployeesParams = { departmentType: null, sortCriteria: null },
-  ) => {
-    const response = await fetchEmployees(params)
+  async (params: FetchEmployeesParams = {}) => {
+    const { departmentType = null, sortCriteria = null } = params
+    const response = await fetchEmployees({ departmentType, sortCriteria })
     return response
   },
 )
@@ -97,28 +70,27 @@ export const employeeSlice = createSlice({
         {} as { [id: number]: Employee },
       )
       state.visibleEmployeeIds = action.payload.map(employee => employee.id)
-      state.visibleEmployeeIds = applyFilterAndSort(state)
+      state.visibleEmployeeIds = applyFilterSortAndSearch(state)
     },
     filterEmployees(
       state,
       action: PayloadAction<{
-        type: "role" | "department"
-        value: string | null
+        type: string | null
       }>,
     ) {
-      const { type, value } = action.payload
-      state.departmentType = type === "department" ? value : null
-      state.visibleEmployeeIds = applyFilterAndSort(state)
+      const { type } = action.payload
+      state.departmentType = type
+      state.visibleEmployeeIds = applyFilterSortAndSearch(state)
     },
     sortEmployees(state, action: PayloadAction<SortCriteria>) {
       state.sortCriteria = action.payload
-      state.visibleEmployeeIds = applyFilterAndSort(state)
+      state.visibleEmployeeIds = applyFilterSortAndSearch(state)
     },
     searchEmployees(state, action: PayloadAction<string>) {
       state.searchQuery = action.payload
 
       // Apply search, filter, and sort
-      state.visibleEmployeeIds = applyFilterAndSort(state)
+      state.visibleEmployeeIds = applyFilterSortAndSearch(state)
     },
   },
   extraReducers: builder => {
@@ -137,7 +109,7 @@ export const employeeSlice = createSlice({
             },
             {} as { [id: number]: Employee },
           )
-          state.visibleEmployeeIds = applyFilterAndSort(state)
+          state.visibleEmployeeIds = applyFilterSortAndSearch(state)
         },
       )
       .addCase(fetchEmployeesAsync.rejected, state => {
@@ -147,7 +119,7 @@ export const employeeSlice = createSlice({
         addEmployeeAsync.fulfilled,
         (state, action: PayloadAction<Employee>) => {
           state.allEmployees[action.payload.id] = action.payload
-          state.visibleEmployeeIds = applyFilterAndSort(state)
+          state.visibleEmployeeIds = applyFilterSortAndSearch(state)
         },
       )
       .addCase(
@@ -155,7 +127,7 @@ export const employeeSlice = createSlice({
         (state, action: PayloadAction<Employee>) => {
           if (state.allEmployees[action.payload.id]) {
             state.allEmployees[action.payload.id] = action.payload
-            state.visibleEmployeeIds = applyFilterAndSort(state)
+            state.visibleEmployeeIds = applyFilterSortAndSearch(state)
           }
         },
       )
@@ -163,14 +135,14 @@ export const employeeSlice = createSlice({
         deleteEmployeeAsync.fulfilled,
         (state, action: PayloadAction<number>) => {
           delete state.allEmployees[action.payload]
-          state.visibleEmployeeIds = applyFilterAndSort(state)
+          state.visibleEmployeeIds = applyFilterSortAndSearch(state)
         },
       )
   },
 })
 
 // TODO: break + util
-const applyFilterAndSort = (state: EmployeeSliceState): number[] => {
+const applyFilterSortAndSearch = (state: EmployeeSliceState): number[] => {
   let filteredIds = Object.keys(state.allEmployees).map(Number)
 
   // Apply filtering
@@ -222,9 +194,9 @@ const applyFilterAndSort = (state: EmployeeSliceState): number[] => {
   return filteredIds
 }
 
-// Selectors
 export const { setEmployees, filterEmployees, sortEmployees, searchEmployees } =
   employeeSlice.actions
+
 export const selectAllEmployees = (state: { employees: EmployeeSliceState }) =>
   Object.values(state.employees.allEmployees)
 
@@ -232,6 +204,7 @@ export const selectVisibleEmployees = (state: {
   employees: EmployeeSliceState
 }) =>
   state.employees.visibleEmployeeIds.map(id => state.employees.allEmployees[id])
+
 export const selectEmployeeStatus = (state: {
   employees: EmployeeSliceState
 }) => state.employees.status
