@@ -12,7 +12,7 @@ function NavigationBar() {
         <div className="navbar-start">
           <a className="btn btn-ghost text-xl">Zippling</a>
         </div>
-        <div className="navbar-end">
+        <div className="navbar-end mr-4">
           <button
             onClick={() => openModal(ADD_EMPLOYEEE_MODAL_ID)}
             className="btn btn-primary"
@@ -26,14 +26,16 @@ function NavigationBar() {
         <div className="navbar-start ml-4">
           <SearchBar />
         </div>
-        <div className="navbar-end ">
+        <div className="navbar-end mr-2">
           <FilterButton />
           <SortButton />
         </div>
       </div>
       <div className="flex-col px-4 justify-center md:hidden">
-        <SearchBar />
-        <div className="flex">
+        <div className="mr-2">
+          <SearchBar />
+        </div>
+        <div className="flex justify-end">
           <FilterButton />
           <SortButton />
         </div>
