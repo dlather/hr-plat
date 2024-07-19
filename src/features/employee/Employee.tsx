@@ -1,5 +1,5 @@
-import NavigationBar from "./components/navigationBar"
-import EmployeeList from "./components/employeeList"
+import EmployeeList from "./components/EmployeeList"
+import NavigationBar from "./components/NavigationBar"
 
 const Employees = () => {
   return (

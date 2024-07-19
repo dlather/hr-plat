@@ -1,13 +1,15 @@
 import React, { useState } from "react"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch } from "../../../app/store"
-import { NAME_ASC, SORT_MAP } from "../../../utils/constants"
-import { sortEmployees } from "../employeeSlice"
+import { SORT_MAP } from "../../../utils/constants"
+import { selectSortCriteria, sortEmployees } from "../employeeSlice"
 import { SortCriteria } from "../types"
 
 const SortButton = () => {
   const [isOpen, setIsOpen] = useState(false)
-  const [sortCriteria, setSortCriteria] = useState<SortCriteria>(NAME_ASC)
+  const sortCriteriaState = useSelector(selectSortCriteria)
+  const [sortCriteria, setSortCriteria] =
+    useState<SortCriteria>(sortCriteriaState)
   const dispatch = useDispatch<AppDispatch>()
 
   const handleSort = () => {

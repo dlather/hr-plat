@@ -208,3 +208,10 @@ export const selectVisibleEmployees = (state: {
 export const selectEmployeeStatus = (state: {
   employees: EmployeeSliceState
 }) => state.employees.status
+
+export const selectSortCriteria = (state: { employees: EmployeeSliceState }) =>
+  state.employees.sortCriteria
+
+export const selectDepartmentType = (state: {
+  employees: EmployeeSliceState
+}) => state.employees.departmentType

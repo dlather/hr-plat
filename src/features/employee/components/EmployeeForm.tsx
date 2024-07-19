@@ -1,35 +1,41 @@
 import { useForm, SubmitHandler } from "react-hook-form"
 import { useDispatch } from "react-redux"
-import { addEmployeeAsync } from "../employeeSlice"
+import { addEmployeeAsync, editEmployeeAsync } from "../employeeSlice"
 import { closeModal } from "../../../utils/common"
-import { Employee } from "../types"
+import { Employee, NewEmployee } from "../types"
+import { ADD_EMPLOYEEE_MODAL_ID } from "../../../utils/constants"
 
-type Inputs = Omit<Employee, "id">
-
-export default function AddEmployeeForm() {
+export default function EmployeeForm({
+  modalId = ADD_EMPLOYEEE_MODAL_ID,
+  defaultState,
+}: {
+  modalId: string
+  defaultState: Employee | null
+}) {
   const dispatch = useDispatch()
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<Inputs>()
+  } = useForm<NewEmployee>({
+    defaultValues: defaultState ?? {},
+  })
 
-  // Define the submit handler
-  const onSubmit: SubmitHandler<Inputs> = data => {
+  const onSubmit: SubmitHandler<NewEmployee> = data => {
     console.log(data)
-    dispatch(addEmployeeAsync(data) as any)
-    closeModal("add-employee-form")
-    // Here you would typically dispatch an action to add the employee
+    if (modalId !== ADD_EMPLOYEEE_MODAL_ID && defaultState && defaultState.id) {
+      dispatch(editEmployeeAsync({ ...data, id: defaultState.id }) as any)
+    }
+    if (modalId === ADD_EMPLOYEEE_MODAL_ID) {
+      dispatch(addEmployeeAsync(data) as any)
+    }
+    closeModal(modalId)
   }
 
   return (
-    <dialog
-      id="add-employee-form"
-      className="modal modal-bottom sm:modal-middle"
-    >
+    <dialog id={modalId} className="modal modal-bottom sm:modal-middle">
       <div className="modal-box">
-        <h3 className="font-bold text-lg">Hello!</h3>
-        <p className="py-4">Press ESC key or click the button below to close</p>
+        <h1 className="font-semibold text-lg mx-auto">Add New Employee</h1>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 p-4">
           {/* Name Input */}
           <label className="input input-bordered flex items-center gap-2">
@@ -94,19 +100,16 @@ export default function AddEmployeeForm() {
               {...register("details")}
             />
           </label>
-
-          {/* Submit Button */}
-          <button type="submit" className="btn btn-primary">
-            Add Employee
-          </button>
+          <div className="flex justify-center items-center gap-2">
+            <button type="submit" className="btn btn-wide btn-primary">
+              Confirm
+            </button>
+          </div>
         </form>
-
-        <div className="modal-action">
-          <form method="dialog">
-            <button className="btn">Close</button>
-          </form>
-        </div>
       </div>
+      <form method="dialog" className="modal-backdrop">
+        <button>close</button>
+      </form>
     </dialog>
   )
 }

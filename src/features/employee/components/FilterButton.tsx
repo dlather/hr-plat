@@ -1,11 +1,19 @@
-import React, { useState } from "react"
+import { useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch } from "../../../app/store"
-import { selectVisibleEmployees, filterEmployees } from "../employeeSlice"
+import {
+  selectVisibleEmployees,
+  filterEmployees,
+  selectSortCriteria,
+  selectDepartmentType,
+} from "../employeeSlice"
 
 const FilterButton = () => {
   const [isOpen, setIsOpen] = useState(false)
-  const [departmentType, setdepartmentType] = useState<string | null>(null)
+  const departmentTypeState = useSelector(selectDepartmentType)
+  const [departmentType, setdepartmentType] = useState<string | null>(
+    departmentTypeState,
+  )
 
   const dispatch = useDispatch<AppDispatch>()
   const employees = useSelector(selectVisibleEmployees)

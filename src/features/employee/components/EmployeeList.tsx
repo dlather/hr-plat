@@ -1,13 +1,14 @@
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { AppDispatch } from "../../../../app/store"
+import { AppDispatch } from "../../../app/store"
+import ConfirmModal from "../../../components/ConfirmModal"
+import { openModal, closeModal } from "../../../utils/common"
 import {
   selectVisibleEmployees,
   selectEmployeeStatus,
   fetchEmployeesAsync,
-} from "../../employeeSlice"
-import { closeModal, openModal } from "../../../../utils/common"
-import ConfirmModal from "../../../../components/ConfirmModal"
+} from "../employeeSlice"
+import EmployeeForm from "./EmployeeForm"
 
 function EmployeeList() {
   const dispatch = useDispatch<AppDispatch>()
@@ -50,14 +51,19 @@ function EmployeeList() {
             </thead>
             <tbody>
               {employees.map(employee => (
-                <tr>
+                <tr key={employee.id}>
                   <th>{employee.id}</th>
                   <td>{employee.name}</td>
                   <td>{employee.role}</td>
                   <td>{employee.department}</td>
                   <td>{employee.hireDate}</td>
                   <td>
-                    <button className="btn btn-ghost ">Edit</button>
+                    <button
+                      onClick={() => openModal(`edit-${employee.id}`)}
+                      className="btn btn-ghost "
+                    >
+                      Edit
+                    </button>
                   </td>
                   <td>
                     <button
@@ -66,14 +72,20 @@ function EmployeeList() {
                     >
                       Delete
                     </button>
-                    <ConfirmModal
-                      modalId={`delete-${employee.id}`}
-                      onSuccess={() => console.log("delete")}
-                      title={"Are you sure ?"}
-                      onCancel={() => closeModal(`delete-${employee.id}`)}
-                      description="yy"
-                    />
                   </td>
+                  <EmployeeForm
+                    key={`employee-form-${employee.id}`}
+                    modalId={`edit-${employee.id}`}
+                    defaultState={employee}
+                  />
+                  <ConfirmModal
+                    key={`confirm-delete-${employee.id}`}
+                    modalId={`delete-${employee.id}`}
+                    onSuccess={() => console.log("delete")}
+                    title={"Are you sure ?"}
+                    onCancel={() => closeModal(`delete-${employee.id}`)}
+                    description="This action will delete the employee"
+                  />
                 </tr>
               ))}
             </tbody>

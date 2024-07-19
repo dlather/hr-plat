@@ -1,8 +1,10 @@
-import { openModal } from "../../../../utils/common"
-import AddEmployeeForm from "../AddEmployeeForm"
-import FilterButton from "../FilterButton"
-import SearchBar from "../SearchBar"
-import SortButton from "../SortButton"
+import { openModal } from "../../../utils/common"
+import { ADD_EMPLOYEEE_MODAL_ID } from "../../../utils/constants"
+import EmployeeForm from "./EmployeeForm"
+import FilterButton from "./FilterButton"
+import SearchBar from "./SearchBar"
+import SortButton from "./SortButton"
+
 function NavigationBar() {
   return (
     <div>
@@ -12,12 +14,12 @@ function NavigationBar() {
         </div>
         <div className="navbar-end">
           <button
-            onClick={() => openModal("add-employee-form")}
+            onClick={() => openModal(ADD_EMPLOYEEE_MODAL_ID)}
             className="btn btn-primary"
           >
             Add Employee
           </button>
-          <AddEmployeeForm />
+          <EmployeeForm />
         </div>
       </div>
       <div className="navbar bg-base-100 hidden md:flex">
