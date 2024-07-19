@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch } from "../../../app/store"
 import {
@@ -17,7 +17,9 @@ const FilterButton = () => {
 
   const dispatch = useDispatch<AppDispatch>()
   const employees = useSelector(selectVisibleEmployees)
-  const departments = Array.from(new Set(employees.map(emp => emp.department)))
+  const departments = useMemo(() => {
+    return Array.from(new Set(employees.map(emp => emp.department)))
+  }, [employees])
 
   const handleFilter = () => {
     dispatch(filterEmployees({ type: departmentType }))

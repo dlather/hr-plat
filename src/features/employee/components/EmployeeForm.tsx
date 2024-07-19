@@ -111,7 +111,9 @@ export default function EmployeeForm({
               {...register("details")}
             />
           </label>
-          <div className="flex justify-center items-center gap-2">
+          <div
+            className={`flex justify-center items-center gap-2 ${isViewMode ? "hidden" : null}`}
+          >
             <button type="submit" className="btn btn-wide btn-primary">
               Confirm
             </button>

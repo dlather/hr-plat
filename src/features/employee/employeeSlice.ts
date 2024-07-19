@@ -139,7 +139,6 @@ export const employeeSlice = createSlice({
   },
 })
 
-// TODO: break + util
 const applyFilterSortAndSearch = (state: EmployeeSliceState): number[] => {
   let filteredIds = Object.keys(state.allEmployees).map(Number)
 
