@@ -7,8 +7,10 @@ import {
   selectVisibleEmployees,
   selectEmployeeStatus,
   fetchEmployeesAsync,
+  deleteEmployeeAsync,
 } from "../employeeSlice"
 import EmployeeForm from "./EmployeeForm"
+import { VIEW_EMPLOYEEE_MODAL_ID } from "../../../utils/constants"
 
 function EmployeeList() {
   const dispatch = useDispatch<AppDispatch>()
@@ -42,11 +44,10 @@ function EmployeeList() {
               <tr>
                 <th>ID</th>
                 <th>Name</th>
+                <th className="hidden lg:flex">Department</th>
                 <th>Role</th>
-                <th>Department</th>
-                <th>Hire Date</th>
-                <th></th>
-                <th></th>
+                <th className="hidden lg:flex">Hire Date</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -54,18 +55,24 @@ function EmployeeList() {
                 <tr key={employee.id}>
                   <th>{employee.id}</th>
                   <td>{employee.name}</td>
+                  <td className="hidden lg:flex">{employee.department}</td>
                   <td>{employee.role}</td>
-                  <td>{employee.department}</td>
-                  <td>{employee.hireDate}</td>
+                  <td className="hidden lg:flex">{employee.hireDate}</td>
                   <td>
+                    <button
+                      onClick={() =>
+                        openModal(`${VIEW_EMPLOYEEE_MODAL_ID}-${employee.id}`)
+                      }
+                      className="btn btn-ghost"
+                    >
+                      Details
+                    </button>
                     <button
                       onClick={() => openModal(`edit-${employee.id}`)}
                       className="btn btn-ghost "
                     >
                       Edit
                     </button>
-                  </td>
-                  <td>
                     <button
                       onClick={() => openModal(`delete-${employee.id}`)}
                       className="btn btn-ghost text-red-400"
@@ -74,14 +81,19 @@ function EmployeeList() {
                     </button>
                   </td>
                   <EmployeeForm
-                    key={`employee-form-${employee.id}`}
+                    key={`view-employee-form-${employee.id}`}
+                    modalId={`${VIEW_EMPLOYEEE_MODAL_ID}-${employee.id}`}
+                    defaultState={employee}
+                  />
+                  <EmployeeForm
+                    key={`edit-employee-form-${employee.id}`}
                     modalId={`edit-${employee.id}`}
                     defaultState={employee}
                   />
                   <ConfirmModal
                     key={`confirm-delete-${employee.id}`}
                     modalId={`delete-${employee.id}`}
-                    onSuccess={() => console.log("delete")}
+                    onSuccess={() => dispatch(deleteEmployeeAsync(employee.id))}
                     title={"Are you sure ?"}
                     onCancel={() => closeModal(`delete-${employee.id}`)}
                     description="This action will delete the employee"

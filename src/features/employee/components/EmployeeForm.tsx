@@ -3,7 +3,10 @@ import { useDispatch } from "react-redux"
 import { addEmployeeAsync, editEmployeeAsync } from "../employeeSlice"
 import { closeModal } from "../../../utils/common"
 import { Employee, NewEmployee } from "../types"
-import { ADD_EMPLOYEEE_MODAL_ID } from "../../../utils/constants"
+import {
+  ADD_EMPLOYEEE_MODAL_ID,
+  VIEW_EMPLOYEEE_MODAL_ID,
+} from "../../../utils/constants"
 
 export default function EmployeeForm({
   modalId = ADD_EMPLOYEEE_MODAL_ID,
@@ -31,16 +34,18 @@ export default function EmployeeForm({
     }
     closeModal(modalId)
   }
+  const isViewMode = modalId.includes(VIEW_EMPLOYEEE_MODAL_ID)
 
   return (
     <dialog id={modalId} className="modal modal-bottom sm:modal-middle">
       <div className="modal-box">
-        <h1 className="font-semibold text-lg mx-auto">Add New Employee</h1>
+        <h1 className="font-semibold text-lg mx-auto">Employee Form</h1>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 p-4">
           {/* Name Input */}
           <label className="input input-bordered flex items-center gap-2">
             Name
             <input
+              disabled={isViewMode}
               type="text"
               className="grow"
               placeholder="Daisy"
@@ -53,6 +58,7 @@ export default function EmployeeForm({
           <label className="input input-bordered flex items-center gap-2">
             Role
             <input
+              disabled={isViewMode}
               type="text"
               className="grow"
               placeholder="Software Engineer"
@@ -65,6 +71,7 @@ export default function EmployeeForm({
           <label className="input input-bordered flex items-center gap-2">
             Department
             <input
+              disabled={isViewMode}
               type="text"
               className="grow"
               placeholder="Engineering"
@@ -81,6 +88,7 @@ export default function EmployeeForm({
           <label className="input input-bordered flex items-center gap-2">
             Hire Date
             <input
+              disabled={isViewMode}
               type="date"
               className="grow"
               placeholder="2020-01-15"
@@ -95,6 +103,7 @@ export default function EmployeeForm({
           <label className="textarea textarea-bordered flex items-center gap-2">
             Details
             <textarea
+              disabled={isViewMode}
               className="grow"
               placeholder="Details about the employee"
               {...register("details")}

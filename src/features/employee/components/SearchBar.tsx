@@ -1,11 +1,11 @@
-import React from "react"
-import { useDispatch, useSelector } from "react-redux"
-import { searchEmployees, selectVisibleEmployees } from "../employeeSlice"
+import { useState } from "react"
+import { useDispatch } from "react-redux"
+import { searchEmployees } from "../employeeSlice"
 
+// Add debounce when using search API
 const SearchBar = () => {
   const dispatch = useDispatch()
-  const [query, setQuery] = React.useState("")
-  const visibleEmployees = useSelector(selectVisibleEmployees)
+  const [query, setQuery] = useState("")
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(event.target.value)

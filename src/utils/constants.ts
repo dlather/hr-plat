@@ -12,3 +12,4 @@ export const SORT_MAP = {
 }
 
 export const ADD_EMPLOYEEE_MODAL_ID = "add-employee-form"
+export const VIEW_EMPLOYEEE_MODAL_ID = "view-employee-form"

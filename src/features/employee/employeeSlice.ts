@@ -19,7 +19,7 @@ const initialState: EmployeeSliceState = {
   allEmployees: {},
   visibleEmployeeIds: [],
   departmentType: null,
-  sortCriteria: NAME_ASC,
+  sortCriteria: null,
   searchQuery: "",
   status: "idle",
 }
@@ -88,8 +88,6 @@ export const employeeSlice = createSlice({
     },
     searchEmployees(state, action: PayloadAction<string>) {
       state.searchQuery = action.payload
-
-      // Apply search, filter, and sort
       state.visibleEmployeeIds = applyFilterSortAndSearch(state)
     },
   },
@@ -107,7 +105,7 @@ export const employeeSlice = createSlice({
               map[employee.id] = employee
               return map
             },
-            {} as { [id: number]: Employee },
+            { ...state.allEmployees },
           )
           state.visibleEmployeeIds = applyFilterSortAndSearch(state)
         },

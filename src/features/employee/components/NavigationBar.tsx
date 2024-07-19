@@ -19,7 +19,7 @@ function NavigationBar() {
           >
             Add Employee
           </button>
-          <EmployeeForm />
+          <EmployeeForm modalId={ADD_EMPLOYEEE_MODAL_ID} defaultState={null} />
         </div>
       </div>
       <div className="navbar bg-base-100 hidden md:flex">
