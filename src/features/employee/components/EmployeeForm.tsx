@@ -8,6 +8,8 @@ import {
   VIEW_EMPLOYEEE_MODAL_ID,
 } from "../../../utils/constants"
 
+// modalId => ADD_EMPLOYEEE_MODAL_ID: used for adding employee
+// modalId => VIEW_EMPLOYEEE_MODAL_ID: used for only viewing employee details
 export default function EmployeeForm({
   modalId = ADD_EMPLOYEEE_MODAL_ID,
   defaultState,

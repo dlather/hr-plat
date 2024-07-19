@@ -55,9 +55,11 @@ function EmployeeList() {
                 <tr key={employee.id}>
                   <th>{employee.id}</th>
                   <td>{employee.name}</td>
-                  <td className="hidden lg:flex">{employee.department}</td>
+                  <td className="hidden lg:table-cell">
+                    {employee.department}
+                  </td>
                   <td>{employee.role}</td>
-                  <td className="hidden lg:flex">{employee.hireDate}</td>
+                  <td className="hidden lg:table-cell">{employee.hireDate}</td>
                   <td>
                     <button
                       onClick={() =>
