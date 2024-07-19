@@ -19,7 +19,8 @@ Chose to use `allEmployees` as map, and `visibleEmployeeIds` storing only employ
 - Common Components to the repo are at `src/components`
 - Internal app developed as feature, Components specific to Feature are in respective features folder.
 - Used `EmployeeForm` for Add, Edit and Viewing details, although can be restructured
-- `FilterButton`, `SortButton` and `SearchBar` can be moved to app level components and made more generic to support upcoming pages.
+- `OptionsButton` is single component supporting Filter By and Sort By, enabling code reuse.
+- `SearchBar` can be moved to app level components and made more generic to support upcoming pages.
 - Skeleton Loaders can be used instead of spinning widgets.
 - `Pagination` is pending for API's
 - Filter, Sort and Serach works offline for now, can do a API call in background and the update the UI, by then showing the offline data only.
