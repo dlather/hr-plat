@@ -45,7 +45,7 @@ export default function EmployeeForm({
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 p-4">
           {/* Name Input */}
           <label className="input input-bordered flex items-center gap-2">
-            Name
+            <p className="font-semibold">Name</p>
             <input
               disabled={isViewMode}
               type="text"
@@ -58,7 +58,7 @@ export default function EmployeeForm({
 
           {/* Role Input */}
           <label className="input input-bordered flex items-center gap-2">
-            Role
+            <p className="font-semibold">Role</p>
             <input
               disabled={isViewMode}
               type="text"
@@ -71,7 +71,7 @@ export default function EmployeeForm({
 
           {/* Department Input */}
           <label className="input input-bordered flex items-center gap-2">
-            Department
+            <p className="font-semibold">Department</p>
             <input
               disabled={isViewMode}
               type="text"
@@ -88,7 +88,7 @@ export default function EmployeeForm({
 
           {/* Hire Date Input */}
           <label className="input input-bordered flex items-center gap-2">
-            Hire Date
+            <p className="font-semibold">Hire Date</p>
             <input
               disabled={isViewMode}
               type="date"
@@ -102,8 +102,8 @@ export default function EmployeeForm({
           )}
 
           {/* Details Input */}
-          <label className="textarea textarea-bordered flex items-center gap-2">
-            Details
+          <label className="textarea textarea-bordered flex gap-2">
+            <p className="font-semibold">Details</p>
             <textarea
               disabled={isViewMode}
               className="grow"
