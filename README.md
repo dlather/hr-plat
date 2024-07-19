@@ -25,6 +25,8 @@ Chose to use `allEmployees` as map, and `visibleEmployeeIds` storing only employ
 - `Pagination` is pending for API's
 - Filter, Sort and Serach works offline for now, can do a API call in background and the update the UI, by then showing the offline data only.
 - Using `key` prop is essential, as it enables React to optimize rendering of components.
+- When you `filter`, or `sort`, or `search`, initiall local results are checked and shown immediately, and loading component for the upcoming data, enabling better user experience.
+- Used `debounce` for search query, in order to avoid multiple API calls
 - Performance Optimization: Assuming developing multiple features like Employee, we can have following optimizations possible:
     1. Page level lazy loading / code splitting
     2. Using Shell kind of architecture, where changing a internal portion doesn't afffect outer shell.

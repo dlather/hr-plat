@@ -1,7 +1,11 @@
 import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch } from "../../../app/store"
 import { SORT_MAP } from "../../../utils/constants"
-import { selectSortCriteria, sortEmployees } from "../employeeSlice"
+import {
+  fetchEmployeesAsync,
+  selectSortCriteria,
+  sortEmployees,
+} from "../employeeSlice"
 import { SortCriteria } from "../types"
 import OptionsButton from "../../../components/OptionsButton"
 
@@ -10,7 +14,9 @@ const SortButton = () => {
   const dispatch = useDispatch<AppDispatch>()
 
   const applyHandler = (sortCriteria: string | null) => {
-    dispatch(sortEmployees(sortCriteria as SortCriteria))
+    dispatch(
+      fetchEmployeesAsync({ sortCriteria: sortCriteria as SortCriteria }),
+    )
   }
 
   return (

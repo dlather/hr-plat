@@ -3,8 +3,8 @@ import { useDispatch, useSelector } from "react-redux"
 import { AppDispatch } from "../../../app/store"
 import {
   selectVisibleEmployees,
-  filterEmployees,
   selectDepartmentType,
+  fetchEmployeesAsync,
 } from "../employeeSlice"
 import OptionsButton from "../../../components/OptionsButton"
 
@@ -17,7 +17,7 @@ const FilterButton = () => {
   }, [employees])
 
   const applyHandler = (departmentType: string | null) => {
-    dispatch(filterEmployees({ type: departmentType }))
+    dispatch(fetchEmployeesAsync({ departmentType: departmentType }))
   }
 
   return (

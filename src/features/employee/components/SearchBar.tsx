@@ -1,16 +1,40 @@
-import { useState } from "react"
-import { useDispatch } from "react-redux"
-import { searchEmployees } from "../employeeSlice"
+import { ChangeEvent, useEffect, useMemo, useState } from "react"
+import { useDispatch, useSelector } from "react-redux"
+import debouce from "lodash.debounce"
+import { AppDispatch } from "../../../app/store"
+import {
+  fetchEmployeesAsync,
+  searchEmployees,
+  selectDepartmentType,
+  selectSearchQuery,
+} from "../employeeSlice"
 
 // Add debounce when using search API
 const SearchBar = () => {
-  const dispatch = useDispatch()
-  const [query, setQuery] = useState("")
+  const searchQuery = useSelector(selectSearchQuery)
+  const dispatch = useDispatch<AppDispatch>()
+  const [query, setQuery] = useState(searchQuery)
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(event.target.value)
-    dispatch(searchEmployees(event.target.value))
+    const sValue = event.target.value
+    setQuery(sValue)
+    dispatch(searchEmployees(sValue))
+    debouncedFetch(sValue)
   }
+
+  const handleChange = (value: string) => {
+    dispatch(fetchEmployeesAsync({ searchQuery: value }))
+  }
+
+  const debouncedFetch = useMemo(() => {
+    return debouce(handleChange, 300)
+  }, [])
+
+  useEffect(() => {
+    return () => {
+      debouncedFetch.cancel()
+    }
+  }, [debouncedFetch])
 
   return (
     <div className="w-full my-2">

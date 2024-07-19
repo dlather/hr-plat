@@ -14,6 +14,7 @@ export type NewEmployee = Omit<Employee, "id">
 export interface FetchEmployeesParams {
   departmentType?: string | null
   sortCriteria?: SortCriteria
+  searchQuery?: string
 }
 
 export type SortCriteria =

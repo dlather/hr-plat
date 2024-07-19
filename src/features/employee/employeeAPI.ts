@@ -407,7 +407,11 @@ const mockEmployees: Employee[] = [
 ]
 
 export const fetchEmployees = async (
-  params: FetchEmployeesParams = { departmentType: null, sortCriteria: null },
+  params: FetchEmployeesParams = {
+    departmentType: null,
+    sortCriteria: null,
+    searchQuery: "",
+  },
 ): Promise<Employee[]> => {
   return new Promise(resolve => {
     setTimeout(() => {
@@ -416,6 +420,18 @@ export const fetchEmployees = async (
         filteredEmployees = filteredEmployees.filter(
           emp => emp.department === params.departmentType,
         )
+      }
+
+      if (params.searchQuery) {
+        const query = params.searchQuery.toLowerCase()
+        filteredEmployees = filteredEmployees.filter(employee => {
+          return (
+            employee.id.toString().includes(query) ||
+            employee.name.toLowerCase().includes(query) ||
+            employee.role.toLowerCase().includes(query) ||
+            employee.department.toLowerCase().includes(query)
+          )
+        })
       }
 
       if (params.sortCriteria) {

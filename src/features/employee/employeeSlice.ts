@@ -27,8 +27,16 @@ const initialState: EmployeeSliceState = {
 export const fetchEmployeesAsync = createAsyncThunk(
   "employees/fetchEmployees",
   async (params: FetchEmployeesParams = {}) => {
-    const { departmentType = null, sortCriteria = null } = params
-    const response = await fetchEmployees({ departmentType, sortCriteria })
+    const {
+      departmentType = null,
+      sortCriteria = null,
+      searchQuery = "",
+    } = params
+    const response = await fetchEmployees({
+      departmentType,
+      sortCriteria,
+      searchQuery,
+    })
     return response
   },
 )
@@ -93,8 +101,18 @@ export const employeeSlice = createSlice({
   },
   extraReducers: builder => {
     builder
-      .addCase(fetchEmployeesAsync.pending, state => {
+      .addCase(fetchEmployeesAsync.pending, (state, action) => {
+        const { departmentType, sortCriteria, searchQuery } = action.meta.arg
         state.status = "loading"
+        state.departmentType =
+          departmentType === null
+            ? null
+            : (departmentType ?? state.departmentType)
+        state.sortCriteria =
+          sortCriteria === null ? null : (sortCriteria ?? state.sortCriteria)
+        state.searchQuery =
+          searchQuery === "" ? "" : (searchQuery ?? state.searchQuery)
+        state.visibleEmployeeIds = applyFilterSortAndSearch(state)
       })
       .addCase(
         fetchEmployeesAsync.fulfilled,
@@ -212,3 +230,6 @@ export const selectSortCriteria = (state: { employees: EmployeeSliceState }) =>
 export const selectDepartmentType = (state: {
   employees: EmployeeSliceState
 }) => state.employees.departmentType
+
+export const selectSearchQuery = (state: { employees: EmployeeSliceState }) =>
+  state.employees.searchQuery
